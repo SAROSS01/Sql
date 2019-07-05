@@ -4,9 +4,9 @@ use SqlBootcampExample;
 
 CREATE TABLE Customer (
 	ID int not null primary key auto_increment,
-	Name varchar(50) not null,
-	City varchar(50) not null,
-	State varchar(2) not null,
+	Name nvarchar(50) not null,
+	City nvarchar(50) not null,
+	State nvarchar(2) not null,
 	Sales decimal(18,0) not null,
 	Active bit not null
 );
@@ -21,3 +21,19 @@ Insert Customer (Name, City, State, Sales, Active) Values ('ABC Telecom','Birmin
 Insert Customer (Name, City, State, Sales, Active) Values ('Fake Brothers','Stockton','CA',31226191,1);
 Insert Customer (Name, City, State, Sales, Active) Values ('QWERTY Logistics','Lubbock','TX',17226905,1);
 Insert Customer (Name, City, State, Sales, Active) Values ('Demo, Inc.','Las Vegas','NV',69551557,1);
+
+Insert into Customer (Name, City, State, Sales, Active)
+	Values
+    ('Super cool computers', 'Cinci', 'OH', 567433, 1),
+    ('Target', 'Cinci', 'OH', 789334, 1);
+    
+Insert into State (Code, Name)
+		Values
+		('HI' , 'Hawaii'),
+		('NJ' , 'New Jersey'),
+		('NV' , 'Nevada'),
+		('OH' , 'Ohio'),
+		('TX' , 'Texas'),
+		('WA' , 'Washington')
+        
+	

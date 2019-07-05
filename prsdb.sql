@@ -49,13 +49,13 @@ DeliveryMode		varchar(25)		not null,
 Status				varchar(25)		not null,
 Total				decimal(10,2)	not null,
 SubmittedDate		datetime		not null,
-ReasonForRejection	varchar(100)			,
-IsActive			tinyint(1)		not null,
-DateCreated			datetime		not null,
-DateUpdated			datetime		not null,
-UpdatedByUser		int				not null,
+ReasonForRejection	varchar(100)	not null default 1		,
+IsActive			tinyint(1)			not null default 1,
+DateCreated			datetime			not null default current_timestamp,
+Dateupdated			datetime			not null default current_timestamp on update current_timestamp,
+UpdatedByUser		int					not null default 1,
 
-FOREIGN KEY (UserID) REFERENCES Vendor(ID)
+FOREIGN KEY (UserID) REFERENCES User(ID)
 );
 
 CREATE TABLE Product (
@@ -77,15 +77,14 @@ CONSTRAINT vendor_part UNIQUE (VendorID, PartNumber)
 
 
 CREATE TABLE PurchaseRequestLineItem (
-ID					int				primary key auto_increment not null,
-PurchaseRequestID	int				not null,
-ProductID			int				not null,
-Quantity			int				not null,
-IsActive			TinyInt(1)		not null,
-DateCreated			datetime		not null,
-DateUpdated			datetime 		not null,
-UpdatedByUser		int				not null,
-
+ID					int					primary key auto_increment not null,
+PurchaseRequestID	int					not null,
+ProductID			int					not null,
+Quantity			int					not null,
+IsActive			tinyint(1)			not null default 1,
+DateCreated			datetime			not null default current_timestamp,
+Dateupdated			datetime			not null default current_timestamp on update current_timestamp,
+UpdatedByUser		int					not null default 1,
 CONSTRAINT req_pdt UNIQUE (PurchaseRequestID,ProductID)
 );
 
@@ -109,8 +108,22 @@ VALUES		(1, 'B01N5OKGLH', 'Super Smash Bros Ultimate', 49.68),
             (3, 'B01M5DZ525', 'Red Dead Redeption 2', 59.99),
             (3, 'B00KVSQ848', 'Grand Theft Auto 5', 59.99),
             (4, 'B07QQ8W3HG', 'Star Wars Jedi: Fallen Order', 59.99),
-            (4, 'B07DKY958Z', 'Anthem', 38.21)
-            ;
+            (4, 'B07DKY958Z', 'Anthem', 38.21);
+            
+	INSERT INTO PurchaseRequest (UserID, Description, Justification, DateNeeded, DeliveryMode, Status, Total, SubmittedDate, ReasonForRejection)
+    VALUES		(3,'DescTest', 'JustTest', '2019-05-21', 'Carrier Pigeon', 'pending', 100, '2019-05-19', 'test'),
+				(4,'DescTest', 'JustTest', '2019-05-22', 'Trained Hound', 'pending', 100, '2019-05-20', 'test'),
+                (1,'DescTest', 'JustTest', '2019-05-23', 'Harambe', 'pending', 100, '2019-05-21', 'test'),
+                (2,'DescTest', 'JustTest', '2019-05-24', 'Magic Geanie', 'pending', 100, '2019-05-22', 'test');
+	
+    INSERT INTO PurchaseRequestLineItem (PurchaseRequestID, ProductID, Quantity)
+    VALUES		(1,2,10),
+				(3,4,10);
+            
+       -- create a user and grant privileges to that user
+       CREATE USER 'prs_user'@'localhost' IDENTIFIED BY 'sesame';
+       GRANT SELECT, INSERT, DELETE, UPDATE ON prs.* TO 'prs_user'@'localhost';
+	   FLUSH privileges;    
 		
 					
 
